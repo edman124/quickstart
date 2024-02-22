@@ -43,11 +43,10 @@ import org.apache.flink.util.Collector;
 public class DataStreamJob {
 
     public static void main(String[] args) throws Exception {
-        System.out.println("CLAIRE TEST running empty main");
         final MultipleParameterTool params = MultipleParameterTool.fromArgs(args);
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.getConfig().setGlobalJobParameters(params);
-        System.out.println("[chengedward] creating kafka source");
+        System.out.println("[test] creating kafka source");
         // String kafkaTopic = params.get("kafka-topic");
         String brokers = "localhost:9092";
         KafkaSource<String> source =
@@ -58,7 +57,7 @@ public class DataStreamJob {
                         .setStartingOffsets(OffsetsInitializer.earliest())
                         .setValueOnlyDeserializer(new SimpleStringSchema())
                         .build();
-        System.out.println("[chengedward] kafka source created");
+        System.out.println("[test] kafka source created");
         String[] words =
                 new String[] {
                     "To be, or not to be,--that is the question:--",
@@ -119,8 +118,6 @@ public class DataStreamJob {
                         .name("counter");
 
         counts.print().name("print-sink");
-
-        System.out.println("CLAIRE TEST executing");
         env.execute();
     }
 
