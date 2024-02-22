@@ -1,0 +1,24 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: kafka-wordcount
+spec:
+  image: us-central1-docker.pkg.dev/gmf-chengedward/gmf-chengedward/kafka-pipeline:real
+  flinkVersion: v1_17
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    entryClass: org.myorg.quickstart.DataStreamJob
+    jarURI: local:///opt/flink/usrlib/quickstart-0.1.jar
+    args: [ "--output=file://opt/output", "--checkpoint=false" ] # these are not needed
+    parallelism: 1
+    upgradeMode: stateless
